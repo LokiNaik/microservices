@@ -1,0 +1,24 @@
+server:
+  port: 8081  # Port on which the service will run
+
+spring:
+  datasource:
+    url: ${spring.datasource.url}  # Pulling from Config Server
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver-class-name: ${spring.datasource.driver-class-name}
+  jpa:
+    hibernate:
+      ddl-auto: update  # Automatically update schema (for development)
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true  # Show SQL queries in logs
+
+logging:
+  level:
+    org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration: DEBUG  # Added logging for datasource configuration
+    org:
+      springframework:
+        cloud: INFO
+        boot: INFO

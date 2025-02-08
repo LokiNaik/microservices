@@ -22,15 +22,18 @@
 server:
   port: 8888
 spring:
-
   cloud:
     config:
       server:
         git:
-#          uri: https://${GIT_ACCESS_TOKEN}@github.com/LokiNaik/config-repo.git
-          uri: https://github.com/LokiNaik/config-repo.git
-          searchPaths: application
+          uri: https://github.com/LokiNaik/config-repo.git  # Correct repository URL
+          searchPaths: application  # Make sure this folder exists
           cloneOnStart: true
           force-pull: true
-          default-label: main
-#
+          default-label: main  # Ensure this label exists in the repo
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+

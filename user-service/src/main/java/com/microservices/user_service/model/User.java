@@ -1,36 +1,29 @@
 package com.microservices.user_service.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.UUID;
-
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "user")
 public class User {
     @Id
-    private UUID id;
+    private Long id;
+    @Column(name = "username")
     private String username;
+    @Column(name = "email")
     private String email;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
+    //    @JsonIgnore
+    @Column(name = "password")
     private String password;
 
-    public User(UUID id, String username, String email, String firstName, String lastName, String password) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-    }
-
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -66,11 +59,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return this.password;
     }
 
-    public void setPassword(String password, PasswordEncoder passwordEncoder){
-        this.password = passwordEncoder.encode(password);
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
