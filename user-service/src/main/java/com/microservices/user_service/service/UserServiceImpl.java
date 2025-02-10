@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserService implements UserServices{
+public class UserServiceImpl implements UserServices{
 
     private final UserRepository repository;
 
     @Autowired
-    public UserService(UserRepository repository){
+    public UserServiceImpl(UserRepository repository){
         this.repository = repository;
     }
     @Override
