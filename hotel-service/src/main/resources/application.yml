@@ -13,7 +13,7 @@ spring:
     properties:
       hibernate:
         dialect: ${spring.jpa.properties.hibernate.dialect}
-    show-sql: ${spring.jpa.properties.hibernate.show-sql}   # Show SQL queries in logs
+    show-sql:  ${spring.jpa.properties.hibernate.show-sql}  # Show SQL queries in logs
 
 logging:
   level:
