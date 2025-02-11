@@ -3,6 +3,7 @@ package com.micorservices.hotel.controller;
 import com.micorservices.hotel.entities.Hotel;
 import com.micorservices.hotel.service.HotelServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class HotelController {
     @PostMapping("/")
     public ResponseEntity<Hotel> saveHotel(@RequestBody Hotel hotel) {
         Hotel hotel1 = hotelService.saveHotel(hotel);
-        return ResponseEntity.ok(hotel1);
+        return ResponseEntity.status(HttpStatus.CREATED).body(hotel1);
     }
 
     @GetMapping(value = "/{id}")
@@ -31,7 +32,7 @@ public class HotelController {
         return ResponseEntity.ok(hotel);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     public ResponseEntity<List<Hotel>> getAllHotels(){
         List<Hotel> hotelList = hotelService.getAllHotels();
         return ResponseEntity.ok(hotelList);
