@@ -1,0 +1,20 @@
+server:
+  port: 8088
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://localhost:8081/
+          Predicates:
+            - Path=/users/**
+
+        - id: rating-service
+          uri: http://localhost:8083/
+          Predicates:
+            - Path=/ratings/**
+
+        - id: hotel-service
+          uri: http://localhost:8082/
+          Predicates:
+            - Path=/hotel/**

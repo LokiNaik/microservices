@@ -60,19 +60,12 @@ public class UserServiceImpl implements UserServices {
             throw new ResourceNotFoundException("No user found with the user id : " + userId);
         }
         //fetch userRatings from Rating Service.
-       List<Rating> ratingList = ratingService.getRatings(user.getUserId());
-//                restTemplate.exchange(
-//                        AppConstants.RATING_SERVICE.GET_RATINGS + user.getUserId(),
-//                        HttpMethod.GET,
-//                        null,
-//                        new ParameterizedTypeReference<List<Rating>>() {
-//                        }
-//                );
+        List<Rating> ratingList = ratingService.getRatings(user.getUserId());
         log.info("Getting ratings for the user : {}", ratingList);
         user.setRatings(ratingList);
 
-        //Fetch the hotel details.
         ratingList.stream().map(rating -> {
+            //Fetch the hotel details.
             Hotel hotel = hotelService.getHotel(rating.getHotelId());   // restTemplate.getForObject(AppConstants.HOTEL_SERVICE.GET_HOTEL_SERVICE_URL + rating.getHotelId(), Hotel.class);
             rating.setHotel(hotel);
             return rating;
