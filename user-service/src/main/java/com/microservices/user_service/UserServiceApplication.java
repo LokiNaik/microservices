@@ -2,10 +2,10 @@ package com.microservices.user_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
-@ComponentScan("com.microservices.user_service")
+@EnableDiscoveryClient
 public class UserServiceApplication {
 
 	public static void main(String[] args) {

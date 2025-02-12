@@ -1,7 +1,6 @@
 package com.microservices.user_service.entities;
 
 import jakarta.persistence.*;
-import jdk.dynalink.linker.LinkerServices;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class User {
     @Column(name = "PHONE")
     private String phone;
 
-    // by using @Transient we dont save this field into db.
+    // by using @Transient we don't save this field into db.
     @Transient
     private List<Rating> ratings = new ArrayList<>();
 
