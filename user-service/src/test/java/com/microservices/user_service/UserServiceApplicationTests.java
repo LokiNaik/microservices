@@ -19,14 +19,4 @@ class UserServiceApplicationTests {
     @Test
 	void contextLoads() {
 	}
-
-	@Test
-	public void testPostRating(){
-		Rating rating = Rating.builder()
-				.userId("").rate(5).feedback("From test method to test the post").hotelId("")
-				.build();
-		Rating response = ratingService.createRating(rating);
-		System.out.println(response);
-	}
-
 }

@@ -1,20 +1,32 @@
 server:
   port: 8088
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
 spring:
   cloud:
     gateway:
       routes:
         - id: user-service
           uri: http://localhost:8081/
-          Predicates:
+          predicates:
             - Path=/users/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: userCircuitBreaker
+                fallbackUri: forward:/fallback/users
+
 
         - id: rating-service
           uri: http://localhost:8083/
-          Predicates:
+          predicates:
             - Path=/ratings/**
 
         - id: hotel-service
           uri: http://localhost:8082/
-          Predicates:
+          predicates:
             - Path=/hotel/**
+

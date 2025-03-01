@@ -1,19 +1,21 @@
 server:
   port: 8081
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
 spring:
   application:
     name: user-service
+  profiles:
+    active: local  # Ensure this matches the profile in Config Server
   cloud:
     config:
       uri: http://localhost:8888  # URL to the Config Server
-      import:
-        check:
-          optional:
-            configserver:
-#          enabled: false
-#        configserver:
-      profile: local  # Ensure this profile matches the one in the Config Server
-      fail-fast: false  # Set to false for troubleshooting
+      enabled: true
+      fail-fast: false  # Prevents the app from crashing if Config Server is unavailable
+
 logging:
   level:
     org.springframework.cloud.config: INFO
