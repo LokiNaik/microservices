@@ -4,8 +4,8 @@ package com.microservices.api_gateway.model;
 import org.springframework.http.HttpStatus;
 
 public class ErrorResponse {
-    private HttpStatus status;
     private int errorCode;
+    private HttpStatus status;
     private String message;
 
     public HttpStatus getStatus() {

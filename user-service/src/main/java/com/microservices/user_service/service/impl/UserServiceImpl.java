@@ -3,7 +3,6 @@ package com.microservices.user_service.service.impl;
 import com.microservices.user_service.entities.Hotel;
 import com.microservices.user_service.entities.Rating;
 import com.microservices.user_service.entities.User;
-import com.microservices.user_service.entities.constants.AppConstants;
 import com.microservices.user_service.exception.ResourceNotFoundException;
 import com.microservices.user_service.repository.UserRepository;
 import com.microservices.user_service.service.UserServices;
@@ -11,22 +10,15 @@ import com.microservices.user_service.service.external.HotelService;
 import com.microservices.user_service.service.external.RatingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @Slf4j
 public class UserServiceImpl implements UserServices {
     private final UserRepository repository;
-    private final RestTemplate restTemplate;
     private final HotelService hotelService;
     private final RatingService ratingService;
 
@@ -34,7 +26,6 @@ public class UserServiceImpl implements UserServices {
     public UserServiceImpl(UserRepository repository, RestTemplate restTemplate,
                            HotelService hotelService, RatingService ratingService) {
         this.repository = repository;
-        this.restTemplate = restTemplate;
         this.hotelService = hotelService;
         this.ratingService = ratingService;
     }
@@ -53,6 +44,11 @@ public class UserServiceImpl implements UserServices {
     }
 
     @Override
+    public void deleteUser(String userId) {
+        repository.deleteById(userId);
+    }
+
+    @Override
     public User getUser(String userId) {
         // fetching user from userDb
         User user = repository.findByUserId(userId);
@@ -60,22 +56,28 @@ public class UserServiceImpl implements UserServices {
             throw new ResourceNotFoundException("No user found with the user id : " + userId);
         }
         //fetch userRatings from Rating Service.
-        List<Rating> ratingList = ratingService.getRatings(user.getUserId());
-        log.info("Getting ratings for the user : {}", ratingList);
+        List<Rating> ratingList = getRatingList(userId);
         user.setRatings(ratingList);
-
-        ratingList.stream().map(rating -> {
-            //Fetch the hotel details.
-            Hotel hotel = hotelService.getHotel(rating.getHotelId());   // restTemplate.getForObject(AppConstants.HOTEL_SERVICE.GET_HOTEL_SERVICE_URL + rating.getHotelId(), Hotel.class);
-            rating.setHotel(hotel);
-            return rating;
-        }).collect(Collectors.toList());
-
         return user;
     }
 
-    @Override
-    public void deleteUser(String userId) {
-        repository.deleteById(userId);
+    private List<Rating> getRatingList(String userId) {
+        List<Rating> ratings = ratingService.getRatings(userId);
+        log.info("Getting ratings for the user : {}", ratings);
+        if (!ratings.isEmpty()) {
+            ratings.forEach(rating -> {
+                if (!rating.getHotelId().isEmpty()) {
+                    Hotel hotel = getHotel(rating.getHotelId());
+                    rating.setHotel(hotel);
+                }
+            });
+        }
+        return ratings;
+    }
+
+    private Hotel getHotel(String hotelId) {
+        Hotel hotel = hotelService.getHotel(hotelId);
+        log.info("Fetched Hotel: {}", hotel);
+        return hotel;
     }
 }

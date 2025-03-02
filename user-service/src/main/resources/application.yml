@@ -25,9 +25,32 @@ logging:
 
 eureka:
   instance:
-    prefer-ip-address: true
+    prefer-ip-address: ${eureka.instance.prefer-ip-address}
   client:
-    fetch-registry: true
-    register-with-eureka: true
+    fetch-registry: ${eureka.client.fetch-registry}
+    register-with-eureka: ${eureka.client.register-with-eureka}
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${eureka.client.service-url.defaultZone}
+feign:
+  circuitbreaker:
+    enabled: ${feign.circuitbreaker.enabled}
+  client:
+    config:
+      default:
+        connectTimeout: ${feign.client.config.default.connectTimeout}
+        readTimeout:  ${feign.client.config.default.readTimeout}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingService:
+        failureRateThreshold: ${resilience4j.circuitbreaker.instances.ratingService.failureRateThreshold}
+        waitDurationInOpenState: ${resilience4j.circuitbreaker.instances.ratingService.waitDurationInOpenState}
+        permittedNumberOfCallsInHalfOpenState: ${resilience4j.circuitbreaker.instances.ratingService.permittedNumberOfCallsInHalfOpenState}
+        slidingWindowSize: ${resilience4j.circuitbreaker.instances.ratingService.slidingWindowSize}
+      hotelService:
+        failureRateThreshold: ${resilience4j.circuitbreaker.instances.hotelService.failureRateThreshold}
+        waitDurationInOpenState: ${resilience4j.circuitbreaker.instances.hotelService.waitDurationInOpenState}
+        permittedNumberOfCallsInHalfOpenState: ${resilience4j.circuitbreaker.instances.hotelService.permittedNumberOfCallsInHalfOpenState}
+        slidingWindowSize: ${resilience4j.circuitbreaker.instances.hotelService.slidingWindowSize}
+
